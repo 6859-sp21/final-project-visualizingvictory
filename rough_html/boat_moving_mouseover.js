@@ -289,22 +289,6 @@ const flattenName = (name) => {
         })
         .style("stroke-width",0)
         .style("fill","rgb(255,0,0)")
-		.on('mouseover', function (d, i) {
-			d3.select(this)
-			.style("fill","rgb(0,0,255)");
-			console.log(i);
-			d3.select(`#${flattenName(i.Shipyard)}`)
-			.attr("fill","rgb(255,255,255)");
-
-			detailDiv.html(data2Text(i));
-			})
-			.on("mouseout",function (d, i) {
-			d3.select(this)
-			.style("fill","rgb(255,0,0)");
-			d3.select(`#${flattenName(i.Shipyard)}`)
-			.attr("fill","rgb(0,0,255)");
-			detailDiv.html(``);
-			});
 
 
 
@@ -315,30 +299,50 @@ const flattenName = (name) => {
 		
 
 		const looper = () => {
-		  let i = 0;                  
+			let promises = [];
+			let i = 0;                  
 
-			function myLoop() {         
-			  setTimeout(function() {   
-				unitSVG.select(`#ship${i}`)
-				.transition()
-				.duration(3000)
-				.attr("d",function(){
-					let x = shipData[i].x;
-					let y = shipData[i].y;
-					return(shipMaker(x,y));
-				});  
+			function myLoop() {    
+				setTimeout(function() { 
+					promises.push(() => {
+						return new Promise((resolve, reject) => {
+							unitSVG.select(`#ship${i}`)
+							.transition()
+							.duration(3000)
+							.attr("d",function(){
+								let x = shipData[i].x;
+								let y = shipData[i].y;
+								return(shipMaker(x,y));
+							})
+							.on("end",resolve);
+						});
+					});
+					promises[i]().then(function(){
+						unitSVG.select(`#ship${i}`)
+						.on('mouseover', function () {
+							d3.select(`#ship${i}`).transition()
+							.duration('50')
+							.style("fill","rgb(0,0,255)");
+							d3.select(`#${flattenName(shipData[i].Shipyard)}`)
+							.attr("fill","rgb(255,255,255)");
+
+							detailDiv.html(data2Text(shipData[i]));
+							});  
+				});
 				i++;                    
 				if (i < shipData.length) {           
-				  myLoop();             
+					myLoop();             
 				}                       
-			  }, 3)
+				}, 3)
 			}
 
 			myLoop();
+			
 		};
 
-		looper();
 
+		
+		looper();
         });
 
 		

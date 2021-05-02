@@ -182,6 +182,16 @@ const flattenName = (name) => {
         let mapHeight = 150;
         let mapWidth = 300;
 
+		const shipYardColorOff = "rgb(16, 230, 144)";
+		const selectColor = "rgb(255, 0, 195)";
+		const shipColor = "rgb(47, 50, 56)";
+		const months = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."];
+
+		function numericDate2Written(nDate){
+			let pieces = nDate.split("-");
+			return(`${months[pieces[1]-1]} ${pieces[2]}, ${pieces[0]}`);
+		}
+
         console.log(shipYards.filter(function(d){ return d.properties.name=="California Shipbuilding Corp"})[0].geometry.coordinates);
 
         const shipMaker = (x,y) => {
@@ -226,6 +236,7 @@ const flattenName = (name) => {
         };
 
         detailDiv = d3.selectAll("#details");
+		dateDiv = d3.selectAll("#date");
 
 
 
@@ -268,7 +279,7 @@ const flattenName = (name) => {
         .attr("cx", function(d){return(projection(d.geometry.coordinates)[0])})
         .attr("cy", function(d){return(projection(d.geometry.coordinates)[1])})
         .attr("r", "4px")
-        .attr("fill", "blue")
+        .attr("fill", shipYardColorOff)
         .attr("id",function(d){return(flattenName(d.properties.name))});
 
 
@@ -276,68 +287,85 @@ const flattenName = (name) => {
         });
 
 
-        let ships = unitSVG.selectAll("path.ship")
-        .data(shipData)
-        .enter()
-        .append("path")
-		.attr("id", function(d){ return(`ship${d.sequentialID}`)})
-        .attr("d",function(d){
-            let [x,y] = projection(shipYards.filter(function(dd){ 
-                return dd.properties.name==d.Shipyard})[0]
-                    .geometry.coordinates)
-            return(shipMaker(x,y));
-        })
-        .style("stroke-width",0)
-        .style("fill","rgb(255,0,0)")
-		.on('mouseover', function (d, i) {
-			d3.select(this)
-			.style("fill","rgb(0,0,255)");
-			console.log(i);
-			d3.select(`#${flattenName(i.Shipyard)}`)
-			.attr("fill","rgb(255,255,255)");
-
-			detailDiv.html(data2Text(i));
-			})
-			.on("mouseout",function (d, i) {
-			d3.select(this)
-			.style("fill","rgb(255,0,0)");
-			d3.select(`#${flattenName(i.Shipyard)}`)
-			.attr("fill","rgb(0,0,255)");
-			detailDiv.html(``);
-			});
+        
 
 
 
 		console.log(unitSVG.select("#ship1"));
-
+		let dateList = [];
+		d3.csv("allDates.csv").then(function(allDates) {
+			
+			for (let i =0; i < allDates.length; i++){
+				dateList.push(allDates[i].dates);
+				//console.log(shipData.filter(function(d){ return d.Completed==dateList[i]}));
+			}
+			
 		
 
 		
 
 		const looper = () => {
-		  let i = 0;                  
+		  let i = 0;          
+		  console.log(dateList.length);
 
 			function myLoop() {         
 			  setTimeout(function() {   
-				unitSVG.select(`#ship${i}`)
-				.transition()
-				.duration(3000)
-				.attr("d",function(){
-					let x = shipData[i].x;
-					let y = shipData[i].y;
-					return(shipMaker(x,y));
-				});  
+			  //console.log(dateList[i])
+				dateShips = shipData.filter(function(d){ return d.Completed==dateList[i]});
+				dateDiv.html(`${numericDate2Written(dateList[i])}`);
+				
+				for (let j = 0; j < dateShips.length; j++){
+					unitSVG
+						.data([dateShips[j]])
+						.append("path")
+						.attr("id", function(d){ return(`ship${d.sequentialID}`)})
+						.attr("d",function(d){
+							let [x,y] = projection(shipYards.filter(function(dd){ 
+								return dd.properties.name==d.Shipyard})[0]
+									.geometry.coordinates)
+							return(shipMaker(x,y));
+						})
+						.style("stroke-width",0)
+						.style("fill",shipColor)
+						.on('mouseover', function (d, i) {
+							d3.select(this)
+							.style("fill",selectColor);
+							d3.select(`#${flattenName(i.Shipyard)}`)
+							.attr("fill",selectColor)
+							.attr("r","8px");
+
+							detailDiv.html(data2Text(i));
+							})
+							.on("mouseout",function (d, i) {
+							d3.select(this)
+							.style("fill",shipColor);
+							d3.select(`#${flattenName(i.Shipyard)}`)
+							.attr("fill",shipYardColorOff)
+							.attr("r","4px");
+							detailDiv.html(``);
+							});
+
+					unitSVG.select(`#ship${dateShips[j].sequentialID}`)
+					.transition()
+					.duration(500)
+					.attr("d",function(){
+						let x = dateShips[j].x;
+						let y = dateShips[j].y;
+						return(shipMaker(x,y));
+					});  
+				}
 				i++;                    
-				if (i < shipData.length) {           
+				if (i < dateList.length) {           
 				  myLoop();             
 				}                       
-			  }, 3)
+			  }, 30)
 			}
 
 			myLoop();
 		};
 
 		looper();
+		});
 
         });
 

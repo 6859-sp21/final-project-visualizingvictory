@@ -17,15 +17,47 @@
             position:relative;
         }
 
+        .svg-container {
+            display: inline-block;
+            position: relative;
+            width: 100%;
+            padding-bottom: 50%;
+            vertical-align: top;
+            overflow: hidden;
+        }
+        .svg-content {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #date{
+            font-size:36px;
+        }
+
 
     </style>
 </head>
 <body>
-    <section id="graphic1" , class="graphic" style="width:100%">
-        <div id="details", style="height:20px"></div>
-        <div id="unit" , style="width: 1500px; height: 800px">
+    <div id="sidePanel" style="width:25%; float:right;top:10px">
+    </div>
+
+    <section id="graphic1" , class="graphic" style="width:75%">
+        <div id="details" , style="height:20px; width:50%"></div>
+        <div id="date" , style="height:20px; width:50%; left:50%"></div>
+        <div id="unit" , class="svg-container">
 
         </div>
+        
+        <form name="myform" onSubmit="return false">
+            <input type="text" id="myVal" placeholder="Enter search here...">
+            <button id="sort" type="submit">Sort</button>
+            <button id="clear" type="button">clear</button>
+            <button id="playPause" type="button">play</button>
+            <button id="scrollBackward" type="button">date backward</button>
+            <button id="scrollForward" type="button">date forward</button>
+        </form>
     </section>
 
 
@@ -34,7 +66,7 @@
     <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
 
 
-    <script src="boat_moving_time.js"></script>
+    <script src="shared_highlighting.js"></script>
 
 </body>
     </html>

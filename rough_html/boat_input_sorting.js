@@ -177,10 +177,21 @@ const flattenName = (name) => {
         }
         }
         ];
-        let unitHeight = 800;
+        let unitHeight = 850;
         let unitWidth = 1500;
         let mapHeight = 150;
         let mapWidth = 300;
+
+		const shipYardColorOff = "rgb(16, 230, 144)";
+		const selectColor = "rgb(255, 0, 195)";
+		const shipColor = "rgb(47, 50, 56)";
+		const months = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."];
+		const highlightColor = "rgb(255,0,0)";
+
+		function numericDate2Written(nDate){
+			let pieces = nDate.split("-");
+			return(`${months[pieces[1]-1]} ${pieces[2]}, ${pieces[0]}`);
+		}
 
         console.log(shipYards.filter(function(d){ return d.properties.name=="California Shipbuilding Corp"})[0].geometry.coordinates);
 
@@ -194,13 +205,14 @@ const flattenName = (name) => {
         //console.log(shipData);
 
         let unitSVG = d3.selectAll("#unit")
-        .append("svg:svg")
-        .attr("height",unitHeight)
-        .attr("width",unitWidth);
+			.append("svg:svg")
+			.attr("preserveAspectRatio", "xMinYMin meet")
+			.attr("viewBox", `0 0 ${unitWidth} ${unitHeight}`)
+			.classed("svg-content", true);
 
         const unitMapper = (shipIndex,shipR, numCols, numShips, width) => {
         let spacing = (width-2*shipR)/numCols;
-        let y = Math.floor(shipIndex/numCols)*12 + shipR;
+        let y = Math.floor(shipIndex/numCols)*11 + shipR;
         let x = (shipIndex%numCols) * spacing + shipR;
         return([x,y]);
         }
@@ -213,19 +225,22 @@ const flattenName = (name) => {
 
 
         d3.csv("allShipsOrdered.csv").then(function(data) {
+		let searchTarget = "lkjfsdfsdfsdf";
         for (let i =0; i< data.length; i++){
         shipData.push(data[i]);
         };
 
 
         for (let i =0; i < shipData.length; i++){
-        let [x,y] = unitMapper(i,20,70,shipData.length,unitWidth)
+        let [x,y] = unitMapper(i,20,75,shipData.length,unitWidth)
         shipData[i].x = x;
         shipData[i].y = y;
 		shipData[i].sequentialID = i;
+		shipData[i].highlighted = false;
         };
 
         detailDiv = d3.selectAll("#details");
+		dateDiv = d3.selectAll("#date");
 
 
 
@@ -237,8 +252,8 @@ const flattenName = (name) => {
         // Map and projection
         var projection = d3.geoMercator()
         .center([-93,44])                // GPS of location to zoom on
-        .scale(350)                       // This is like the zoom
-        .translate([ unitWidth/2, 530 ])
+        .scale(600)                       // This is like the zoom
+        .translate([ unitWidth/2, 500 ])
 
         // Load external data and boot
         d3.json("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson").then(function(data){
@@ -268,7 +283,7 @@ const flattenName = (name) => {
         .attr("cx", function(d){return(projection(d.geometry.coordinates)[0])})
         .attr("cy", function(d){return(projection(d.geometry.coordinates)[1])})
         .attr("r", "4px")
-        .attr("fill", "blue")
+        .attr("fill", shipYardColorOff)
         .attr("id",function(d){return(flattenName(d.properties.name))});
 
 
@@ -276,59 +291,81 @@ const flattenName = (name) => {
         });
 
 
-        let ships = unitSVG.selectAll("path.ship")
-        .data(shipData)
-        .enter()
-        .append("path")
-		.attr("id", function(d){ return(`ship${d.sequentialID}`)})
-        .attr("d",function(d){
-            let [x,y] = projection(shipYards.filter(function(dd){ 
-                return dd.properties.name==d.Shipyard})[0]
-                    .geometry.coordinates)
-            return(shipMaker(x,y));
-        })
-        .style("stroke-width",0)
-        .style("fill","rgb(255,0,0)")
-		.on('mouseover', function (d, i) {
-			d3.select(this)
-			.style("fill","rgb(0,0,255)");
-			console.log(i);
-			d3.select(`#${flattenName(i.Shipyard)}`)
-			.attr("fill","rgb(255,255,255)");
-
-			detailDiv.html(data2Text(i));
-			})
-			.on("mouseout",function (d, i) {
-			d3.select(this)
-			.style("fill","rgb(255,0,0)");
-			d3.select(`#${flattenName(i.Shipyard)}`)
-			.attr("fill","rgb(0,0,255)");
-			detailDiv.html(``);
-			});
+        
 
 
 
 		console.log(unitSVG.select("#ship1"));
-
+		let dateList = [];
+		d3.csv("allDates.csv").then(function(allDates) {
+			
+			for (let i =0; i < allDates.length; i++){
+				dateList.push(allDates[i].dates);
+				//console.log(shipData.filter(function(d){ return d.Completed==dateList[i]}));
+			}
+			
 		
 
 		
 
 		const looper = () => {
-		  let i = 0;                  
+		  let i = 0;          
+		  console.log(dateList.length);
 
 			function myLoop() {         
 			  setTimeout(function() {   
-				unitSVG.select(`#ship${i}`)
-				.transition()
-				.duration(3000)
-				.attr("d",function(){
-					let x = shipData[i].x;
-					let y = shipData[i].y;
-					return(shipMaker(x,y));
-				});  
+			  //console.log(dateList[i])
+				dateShips = shipData.filter(function(d){ return d.Completed==dateList[i]});
+				dateDiv.html(`${numericDate2Written(dateList[i])}`);
+				
+				for (let j = 0; j < dateShips.length; j++){
+					unitSVG
+						.data([dateShips[j]])
+						.append("path")
+						.attr("id", function(d){ return(`ship${d.sequentialID}`)})
+						.attr("d",function(d){
+							let [x,y] = projection(shipYards.filter(function(dd){ 
+								return dd.properties.name==d.Shipyard})[0]
+									.geometry.coordinates)
+							return(shipMaker(x,y));
+						})
+						.style("stroke-width",0)
+						.style("fill",shipColor)
+						.on('mouseover', function (d, i) {
+							d3.select(this)
+							.style("fill",selectColor);
+							d3.select(`#${flattenName(i.Shipyard)}`)
+							.attr("fill",selectColor)
+							.attr("r","8px");
+
+							detailDiv.html(data2Text(i));
+							})
+							.on("mouseout",function (d, i) {
+							d3.select(this)
+							.style("fill",function(i){
+								if (i.highlighted == true) {
+									return(highlightColor);
+								} else{
+									return(shipColor);
+								}
+							});
+							d3.select(`#${flattenName(i.Shipyard)}`)
+							.attr("fill",shipYardColorOff)
+							.attr("r","4px");
+							detailDiv.html(``);
+							});
+
+					unitSVG.select(`#ship${dateShips[j].sequentialID}`)
+					.transition()
+					.duration(500)
+					.attr("d",function(){
+						let x = dateShips[j].x;
+						let y = dateShips[j].y;
+						return(shipMaker(x,y));
+					});  
+				}
 				i++;                    
-				if (i < shipData.length) {           
+				if (i < dateList.length) {           
 				  myLoop();             
 				}                       
 			  }, 3)
@@ -338,6 +375,38 @@ const flattenName = (name) => {
 		};
 
 		looper();
+		});
+		d3.select("#sort").on("click", function(){
+			let searchTarget = document.getElementById("myVal").value.toLowerCase();
+			for (i=0; i < shipData.length; i++){
+				if (shipData[i].Fate.toLowerCase().indexOf(searchTarget) != -1) {
+					shipData[i].highlighted = true;
+					unitSVG.selectAll(`#ship${shipData[i].sequentialID}`)
+					.style("fill",highlightColor);
+				}
+			}
+			//torpedoedShips = [...shipData].filter(ship => ship.Fate.toLowerCase().indexOf("torpedo") != -1);
+			//for (i = 0; i< torpedoedShips.length; i++){
+				
+			//	unitSVG.selectAll(`#ship${torpedoedShips[i].sequentialID}`)
+			//		.style("fill",highlightColor);
+			//};
+		});
+
+		d3.select("#clear").on("click", function(){
+			for (i=0; i < shipData.length; i++){
+				shipData[i].highlighted = false;
+				unitSVG.selectAll(`#ship${shipData[i].sequentialID}`)
+				.style("fill",shipColor);
+			}
+			//torpedoedShips = [...shipData].filter(ship => ship.Fate.toLowerCase().indexOf("torpedo") != -1);
+			//for (i = 0; i< torpedoedShips.length; i++){
+				
+			//	unitSVG.selectAll(`#ship${torpedoedShips[i].sequentialID}`)
+			//		.style("fill",highlightColor);
+			//};
+		});
+		
 
         });
 
