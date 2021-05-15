@@ -178,19 +178,39 @@ const flattenName = (name) => {
         }
         ];
 
-		const fButton = document.getElementById('scrollForward');
-		const bButton = document.getElementById('scrollBackward');
+		// source: https://www.defense.gov/Explore/Features/story/Article/2293108/significant-events-of-world-war-ii/
+		let timelineEvents = [{date: "Jun. 04, 1942", name: "Battle of Midway"},
+								{date: "Sep. 08, 1943", name: "Italy Surrenders"},
+								{date: "Jun. 06, 1944", name: "D-Day"},
+								{date: "Dec. 16, 1944", name: "Battle of the Bulge"},
+								{date: "Feb. 19, 1945", name: "Iwo Jima"},
+								{date: "Apr. 01, 1945", name: "Invasion of Okinawa"},
+								{date: "May 08, 1945", name: "V-E Day"},
+								{date: "Aug. 06, 1945", name: "Hiroshima"},
+								{date: "Sep. 02, 1945", name: "V-J Day"}];
+
+		let suggestedSearches = ["kamikazied","torpedoed","beached","scrapped","sunk","sank","leyte"];
+		let eventDates = [];
+		for (let i = 0; i < timelineEvents.length; i++){
+			eventDates.push(timelineEvents[i].date);
+		}
+
 		const pButton = document.getElementById('playPause');
-		fButton.disabled = true;
-		bButton.disabled = true;
 		pButton.disabled = false;
+
+		const searchButton = document.getElementById('sort');
+		searchButton.disabled = true;
+
+		const clearButton = document.getElementById('clear');
+		clearButton.disabled = true;
+
+		const suggestButton = document.getElementById('suggestion');
+		suggestButton.disabled = true;
 
 		let playStatus = false;
 		let scrollStatus = false;
 
 		let slider = d3.selectAll("#dateSlider");
-		console.log(slider);
-		console.log("blurp");
 		const sliderJS = document.getElementById('dateSlider');
 		sliderJS.disabled = true
 
@@ -203,11 +223,13 @@ const flattenName = (name) => {
         let unitWidth = 1500;
         let mapHeight = 150;
         let mapWidth = 300;
+		let numDates = 1401;
+		let timelineHeight = 200;
 
 		const shipYardColorOff = "rgb(16, 230, 144)";
 		const selectColor = "rgb(255, 0, 195)";
 		const shipColor = "rgb(47, 50, 56)";
-		const months = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."];
+		const months = ["Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."];
 		const highlightColor = "rgb(255,0,0)";
 
 		function numericDate2Written(nDate){
@@ -231,6 +253,14 @@ const flattenName = (name) => {
 			.attr("preserveAspectRatio", "xMinYMin meet")
 			.attr("viewBox", `0 0 ${unitWidth} ${unitHeight}`)
 			.classed("svg-content", true);
+
+		let timelineSVG = d3.selectAll("#timeline")
+			.append("svg:svg")
+			.attr("preserveAspectRatio","xMinYMin meet")
+			.attr("viewBox",`0 0 ${numDates} ${timelineHeight}`);
+			//.classed("svg-content",true);
+
+		console.log(timelineSVG);
 
         const unitMapper = (shipIndex,shipR, numCols, numShips, width) => {
         let spacing = (width-2*shipR)/numCols;
@@ -289,6 +319,8 @@ const flattenName = (name) => {
         let detailDiv = d3.selectAll("#details");
 		let dateDiv = d3.selectAll("#date");
 		let sidePanel = d3.selectAll("#sidePanel");
+
+		
 
 
 
@@ -413,6 +445,9 @@ const flattenName = (name) => {
 			.attr("fill",shipYardColorOff)
 			.attr("r","4px");
 			detailDiv.html('');
+		})
+		.on('click',function(d,i){
+				sidePanel.html(shipYard2SidePanel(i));
 		});
 
 
@@ -421,12 +456,43 @@ const flattenName = (name) => {
 		let dateList = [];
 		d3.csv("allDates.csv").then(function(allDates) {
 
+
 			console.log(shipYards.length);
 			
 			
 			for (let i =0; i < allDates.length; i++){
 				dateList.push(allDates[i].dates);
 				//console.log(shipData.filter(function(d){ return d.Completed==dateList[i]}));
+				//console.log(numericDate2Written(allDates[i].dates));
+				let dateText = numericDate2Written(allDates[i].dates)
+				if (dateText.search("Jan. 01,") != -1){
+
+					timelineSVG.append("path")
+					.attr("d",`M ${i} 0 v 15`)
+					.attr("stroke","black")
+					.attr("stroke-width","5");
+
+					timelineSVG.append("text")
+					.attr("x", i)
+					.attr("y", 35)
+					.attr("fill","black")
+					.attr("font-size","1.5em")
+					.text(dateText.slice(-4));
+				};
+				if (eventDates.includes(dateText) == true){
+					timelineSVG.append("path")
+					.attr("d",`M ${i} 0 v 15`)
+					.attr("stroke","black")
+					.attr("stroke-width","2");
+
+					timelineSVG.append("text")
+					.attr("x", i)
+					.attr("y", 35)
+					.attr("fill","black")
+					.attr("font-size","1.1em")
+					.text(timelineEvents.filter(event => event.date == dateText)[0].name)
+					.attr("transform",`rotate(70, ${i},35)`);
+				}
 			}
 			scrollIndex = dateList.length-1;
 		
@@ -518,9 +584,11 @@ const flattenName = (name) => {
 						  myLoop();             
 						} else{
 							scrollStatus = true;
-							fButton.disabled = false;
-							bButton.disabled = false;
 							sliderJS.disabled = false;
+							searchButton.disabled = false;
+							clearButton.disabled = false;
+							suggestButton.disabled = false;
+							updateTimer();
 							
 						}
 					  }, 30)
@@ -533,6 +601,13 @@ const flattenName = (name) => {
 		looper();
 		});
 		d3.select("#sort").on("click", function(){
+
+			for (i=0; i < shipData.length; i++){
+				shipData[i].highlighted = false;
+				unitSVG.selectAll(`#ship${shipData[i].sequentialID}`)
+				.style("fill",shipColor);
+			};
+
 			let searchTarget = document.getElementById("myVal").value.toLowerCase();
 			for (i=0; i < shipData.length; i++){
 				if (shipData[i].Fate.toLowerCase().indexOf(searchTarget) != -1) {
@@ -543,7 +618,29 @@ const flattenName = (name) => {
 			}
 		});
 
+		d3.select("#suggestion").on("click", function(){
+
+			for (i=0; i < shipData.length; i++){
+				shipData[i].highlighted = false;
+				unitSVG.selectAll(`#ship${shipData[i].sequentialID}`)
+				.style("fill",shipColor);
+			};
+
+			let searchIndex = Math.floor(Math.random()*suggestedSearches.length);
+			let searchTarget = suggestedSearches[searchIndex];
+			document.getElementById("myVal").value = searchTarget;
+			for (i=0; i < shipData.length; i++){
+				if (shipData[i].Fate.toLowerCase().indexOf(searchTarget) != -1) {
+					shipData[i].highlighted = true;
+					unitSVG.selectAll(`#ship${shipData[i].sequentialID}`)
+					.style("fill",highlightColor);
+				}
+			}
+		});
+
 		d3.select("#clear").on("click", function(){
+
+			document.getElementById("myVal").value = '';
 			for (i=0; i < shipData.length; i++){
 				shipData[i].highlighted = false;
 				unitSVG.selectAll(`#ship${shipData[i].sequentialID}`)
@@ -575,26 +672,22 @@ const flattenName = (name) => {
 				});
 		}
 
-		d3.select("#scrollBackward").on("click", function(){
-			if (scrollStatus == true){
-				scrollIndex = Math.max(scrollIndex-10,0);
-				dateUpdate();
-			}
-		});
 
-		d3.select("#scrollForward").on("click", function(){
-			if (scrollStatus == true){
-				scrollIndex = Math.min(scrollIndex+10,dateList.length -1);
-				dateUpdate();
-			}
-		});
 
 		slider.on("input",function(){
 			scrollIndex = this.value;
-			dateUpdate();
-		})
+			
+		});
 
+		function updateTimer(){
+			setTimeout(function(){
+				dateUpdate();
+				updateTimer();
+			},30)
+			
+		};
 
+		
 		
 		
 
