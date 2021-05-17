@@ -6,6 +6,8 @@
     <title></title>
     <style>
 
+        body {background-color:lightslategray}
+
         .graphic{
 
             
@@ -80,6 +82,7 @@
         position: relative;
         padding: 0 1rem;
         max-width: 30rem;
+        background-color: rgb(207, 255, 252)
         }
 
         figure {
@@ -91,6 +94,15 @@
         -moz-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
         z-index: 0;
+        display: inline-block;
+        }
+
+
+        figure figcaption {
+          position: absolute;
+          top: 25rem;
+          left: 10rem;
+          font-size: 18px;
         }
 
         figure p {
@@ -107,7 +119,8 @@
         color: #fff;
         }
 
-        .scroller-image {
+        figure img {
+            vertical-align:top;
             position: absolute;
             margin:0rem;
             left: 0rem;
@@ -155,6 +168,65 @@
 
         }
 
+    /* The Modal (background) */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    button {
+      background-color: rgb(87, 247, 237);
+      border: none;
+      color: darkslategray;
+      padding: 10px 24px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    button:hover {
+      background-color: darkslategrey; 
+      color: rgb(87, 247, 237);
+    }
+
 
     </style>
 </head>
@@ -179,9 +251,9 @@
                 </div>
                 <div class="step" data-step="2">
                     <p>
-                        After the attack on Pearl Harbor, the United States rapidly began ramping up production of all manner of war goods, and it become clear that we needed to defeat
-                        the Axis powers, in part, by out-manufacturing them. However, this strategy of heavily industrialized warfare raised the new challenge of moving all these crucial
-                        supplies across entire oceans to those who needed them. Production of Liberty ships skyrocketed to meet this demand.
+                        After the attack on Pearl Harbor, the United States rapidly began ramping up production of all manner of war goods, and it became clear that we needed to defeat
+                        the Axis powers, in part, by out-manufacturing them. However, this strategy of heavily industrialized warfare raised the new challenge of moving unprecedented quantites
+                        of supplies across entire oceans to those who needed them. Production of Liberty Ships skyrocketed to meet this demand.
                     </p>
                 </div>
                 <div class="step" data-step="3">
@@ -195,13 +267,13 @@
                 <div class="step" data-step="4">
                     <p>
                         With so many men serving in the armed forces, women worked at the shipyards in unprecedented numbers. At the Liberty shipyards, however, Rosie wouldn't have been a riveter.
-                        To speed up production, the craft were welded, rather than riveted, together. This was a major manufacturing advancement over pre-war designs, and it allowed a newly-trained, 
-                        lower-skill workforce to more quickly assemble ships from large from pre-fabricated sections.
+                        To speed up production, the vessels were welded, rather than riveted, together. This was a major manufacturing advancement over pre-war designs, and it allowed a newly-trained,
+                        lower-skill workforce to more quickly assemble ships from large, pre-fabricated sections.
                     </p>
                 </div>
                 <div class="step" data-step="5">
                     <p>
-                        While transiting the North Atlantic, early liberty ships were prone to developing dangerously large cracks in their hulls. Such cracks caused 3 Liberty ships to break completely in half,
+                        While transiting the North Atlantic, early Liberty Ships were prone to developing dangerously large cracks in their hulls. Such cracks caused 3 Liberty Ships to break completely in half,
                         leading to an urgent investigation of their cause.
                     </p>
                 </div>
@@ -215,8 +287,8 @@
                 </div>
                 <div class="step" data-step="7">
                     <p>
-                        Starting in 1943, the Liberty design was slowly supplanted by a slightly updated class of ships known as Victory ships. By the time this design was adopted, however,
-                        transport ship production was already slowing. Still, over 500 Victory ships were built, a number which is small only in comparison to the heroically large 2,710 Liberty ships
+                        Starting in 1943, the Liberty design was slowly supplanted by a slightly updated class of ships known as Victory Ships. By the time this design was adopted, however,
+                        transport ship production was already slowing. Still, over 500 Victory Ships were built, a number which is small only in comparison to the heroically large 2,710 Liberty Ships
                         constructed during the war.
                     </p>
                 </div>
@@ -224,7 +296,7 @@
                     <p>
                         These nearly 3,400 ships were constructed at over a dozen shipyards across the country. Some locations built only a few Liberty or Victory ships while others built hundreds.
                         The Bethlehem-Fairfield shipyard, in Maryland, and several shipyards on the West Coast are notable for their prolific output. In particular, shipyards operated by Henry Kaiser,
-                        dotting the coastlines of California, Oregon, and Washington, were known for using innovative processes to build ships faster and cheaper than anyone else.
+                        dotting the coastlines of California, Oregon, and Washington, were known for using innovative processes to build ships faster and cheaper than anywhere else.
                     </p>
                 </div>
                 <div class="step" data-step="9">
@@ -243,6 +315,7 @@
             </article>
 
             <figure>
+                <figcaption id="main-caption"></figcaption>
                 <img id="scroller-image1" class="scroller-image" src="images/scroller_image_1.png" style="margin-top:50px; margin-left:50px; opacity:0">
                 <img id="scroller-image2" class="scroller-image" src="images/scroller_image_2.png" style="margin-top:50px; margin-left:50px; opacity:0">
                 <img id="scroller-image3" class="scroller-image" src="images/scroller_image_3.png" style="margin-top:50px; margin-left:50px; opacity:0">
@@ -252,18 +325,21 @@
                 <img id="scroller-image7" class="scroller-image" src="images/scroller_image_7.png" style="margin-top:50px; margin-left:50px; opacity:0">
                 <img id="scroller-image8" class="scroller-image" src="images/scroller_image_8.png" style="margin-top:50px; margin-left:50px; opacity:0">
                 <img id="scroller-image9" class="scroller-image" src="images/scroller_image_9.png" style="margin-top:50px; margin-left:50px; opacity:0">
+
             </figure>
         </section>
 
         <section id="outro" style="margin-bottom:20em"></section>
         <section id="main-viz" style="max-height:100vh; max-width: 100%">
-            <div id="sidePanel" style="width:20%; float:right;top:10px">
+            <div id="sidePanel" style="width:20%; float:right;top:10px; font-size:24px">
+
             </div>
+
 
             <section id="graphic1" , class="graphic" style="width:80%">
                 <div id="details" , style="height:20px; width:50%"></div>
                 <div id="date" , style="height:20px; width:50%; left:50%"></div>
-                <div id="unit" , class="svg-container" style="width:80%; margin-bottom:0%"></div>
+                <div id="unit" , class="svg-container" style="width:95%; margin-bottom:0%"></div>
 
                 <div style="position: relative; padding-top:0%; padding-bottom: 0%; margin: 0%">
                     <form name="myform" onSubmit="return false">
@@ -272,6 +348,34 @@
                         <button id="clear" type="button">Clear</button>
                         <button id="suggestion" type="button">Try Suggested Search</button>
                         <button id="playPause" type="button">Play</button>
+
+
+                        <!--Modal code taken from w3 with very little editing-->
+                        <!-- The Modal -->
+                        <div id="myModal" class="modal">
+
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <p>
+                                    This project owes a great deal to the work of two individuals in particular: James Davies of WW2Ships.com and Mark Biegert of the Math Encounters Blog.
+                                    The history of the Liberty Ships that James Davies compiled is astounding in both its depth and completeness, and Mark Biegert did a fantastic job
+                                    converting that report into a clean, ready-to-use database. Both Davies' report and Biegert's blog post can be found here. In the same blog post,
+                                    Biegert also curated the Victory Ship data available on
+                                    Wikipedia.
+                                    <br />
+                                    <br />
+                                    Indeed, the Wikipedia entries for the Liberty and Victory ships are incredibly rich resources and informed most of the written content in this
+                                    project. More information on the history of the US Merchant Marines can be found on this cite. The articles titled "African-American Mariners" and
+                                    "Struggle for Veteran Status" were particularly enlightening.
+                                    <br />
+                                    <br />
+                                    This project made use of and gratefully acknowledges D3.js and Scrollama.js
+
+                                </p>
+                            </div>
+
+                        </div>
                     </form>
                     <div class="slidecontainer">
                         <input type="range" min="0" max="1400" value="1" class="slider" id="dateSlider" style="width: 80%; z-index:100;">
@@ -282,6 +386,7 @@
 
             </section>
         </section>
+        <button id="myBtn" style="position:fixed; bottom: 2em; right: 0; margin: 0">Further Reading and <br />Acknowledgments</button>
     </main>
 
 
@@ -293,9 +398,34 @@
     <script src="https://unpkg.com/scrollama"></script>
 
 
-    <script src="slider_smoother.js"></script>
+    <script src="add_victory_hover_bug.js"></script>
 
     <script src="scroller.js"></script>
+    <script>// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}</script>
 
 </body>
     </html>
