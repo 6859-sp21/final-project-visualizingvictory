@@ -180,6 +180,7 @@
       overflow: auto; /* Enable scroll if needed */
       background-color: rgb(0,0,0); /* Fallback color */
       background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      font-size:18px;
     }
 
     /* Modal Content/Box */
@@ -350,32 +351,7 @@
                         <button id="playPause" type="button">Play</button>
 
 
-                        <!--Modal code taken from w3 with very little editing-->
-                        <!-- The Modal -->
-                        <div id="myModal" class="modal">
 
-                            <!-- Modal content -->
-                            <div class="modal-content">
-                                <span class="close">&times;</span>
-                                <p>
-                                    This project owes a great deal to the work of two individuals in particular: James Davies of WW2Ships.com and Mark Biegert of the Math Encounters Blog.
-                                    The history of the Liberty Ships that James Davies compiled is astounding in both its depth and completeness, and Mark Biegert did a fantastic job
-                                    converting that report into a clean, ready-to-use database. Both Davies' report and Biegert's blog post can be found here. In the same blog post,
-                                    Biegert also curated the Victory Ship data available on
-                                    Wikipedia.
-                                    <br />
-                                    <br />
-                                    Indeed, the Wikipedia entries for the Liberty and Victory ships are incredibly rich resources and informed most of the written content in this
-                                    project. More information on the history of the US Merchant Marines can be found on this cite. The articles titled "African-American Mariners" and
-                                    "Struggle for Veteran Status" were particularly enlightening.
-                                    <br />
-                                    <br />
-                                    This project made use of and gratefully acknowledges D3.js and Scrollama.js
-
-                                </p>
-                            </div>
-
-                        </div>
                     </form>
                     <div class="slidecontainer">
                         <input type="range" min="0" max="1400" value="1" class="slider" id="dateSlider" style="width: 80%; z-index:100;">
@@ -386,6 +362,35 @@
 
             </section>
         </section>
+        <!--Modal code taken from w3 with very little editing-->
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>
+                    This project owes a great deal to the work of two individuals in particular: James Davies of WW2Ships.com and Mark Biegert of the Math Encounters Blog.
+                    The history of the Liberty Ships that James Davies compiled is astounding in both its depth and completeness, and Mark Biegert did a fantastic job
+                    converting that report into a clean, ready-to-use database. Both Davies' report and Biegert's blog post can be found 
+                    <a href="https://www.mathscinotes.com/2018/05/liberty-ship-production-data/" target="_blank">here</a>. In the same blog post,
+                    Biegert also curated the Victory Ship data available on
+                    Wikipedia.
+                    <br />
+                    <br />
+                    Indeed, the Wikipedia entries for the <a href="https://en.wikipedia.org/wiki/Liberty_ship" target="_blank">Liberty</a> and 
+                    <a href="https://en.wikipedia.org/wiki/Victory_ship" target="_blank">Victory</a> ships are incredibly rich resources and informed most of the written content in this
+                    project. More information on the history of the US Merchant Marines can be found on <a href="http://www.usmm.org/" target="_blank">this website</a>. 
+                    The articles titled "African-American Mariners" and
+                    "Struggle for Veteran Status" were particularly enlightening.
+                    <br />
+                    <br />
+                    This project made use of and gratefully acknowledges D3.js and Scrollama.js
+
+                </p>
+            </div>
+
+        </div>
         <button id="myBtn" style="position:fixed; bottom: 2em; right: 0; margin: 0">Further Reading and <br />Acknowledgments</button>
     </main>
 

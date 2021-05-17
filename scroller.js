@@ -38,7 +38,7 @@ function handleResize() {
 
 // scrollama event handlers
 function handleStepEnter(response) {
-	console.log(response);
+	//console.log(response);
 	// response = { element, direction, index }
 
 	// add color to current step only
@@ -56,8 +56,8 @@ function handleStepEnter(response) {
 		.style("opacity",1);
 
 	document.getElementById("main-caption").innerHTML =	`Figure ${response.index+1}: ${figureCaptions[response.index]}`;
-	console.log(document.getElementById("main-caption"));
-	console.log("hello");
+	//console.log(document.getElementById("main-caption"));
+	//console.log("hello");
 }
 
 function setupStickyfill() {

@@ -405,7 +405,7 @@ const flattenName = (name) => {
         .data(data.features)
         .enter()
         .append("path")
-        .attr("fill", "darkgray")
+        .attr("fill", "rgb(196, 135, 2)")
         .attr("d", d3.geoPath()
         .projection(projection)
         )
