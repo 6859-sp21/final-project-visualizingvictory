@@ -654,7 +654,7 @@ const flattenName = (name) => {
 							updateTimer();
 							
 						}
-					  }, 3)
+					  }, 30)
 				}
 			}
 
