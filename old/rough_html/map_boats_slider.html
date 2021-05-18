@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+
+        .graphic{
+
+            
+        }
+
+        .graphic > * {
+            
+            width:100%;
+            position:relative;
+            padding: 0;
+        }
+
+        .svg-container {
+            margin-top:10px;
+            display: inline-block;
+            position: relative;
+            width: 100%;
+            padding-bottom: 40%;
+            vertical-align: top;
+            overflow: hidden;
+        }
+        .svg-content {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding-bottom: 0;
+        }
+
+        .timeline-container {
+            display: inline-block;
+            position: absolute;
+            padding-top: 0%;
+            top: 70%;
+            width: 100%;
+            padding-bottom: 0%;
+            overflow: hidden;
+            z-index: -100;
+        }
+
+        #date{
+            font-size:36px;
+        }
+
+        .horizontal-timeline {
+            min-width: 100%;
+            position: relative;
+            top: -5em;
+            left:var(--line-offset);
+            height: 20%;
+            background: #e22224;  
+            padding-top: 0%;
+            margin:0px;  
+            float:left;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="sidePanel" style="width:25%; float:right;top:10px">
+    </div>
+
+    <section id="graphic1" , class="graphic" style="width:75%">
+        <div id="details" , style="height:20px; width:50%"></div>
+        <div id="date" , style="height:20px; width:50%; left:50%"></div>
+        <div id="unit" , class="svg-container" style="width:80%; margin-bottom:0%"></div>
+
+        <div style="position: relative; padding-top:0%; padding-bottom: 0%; margin: 0%">
+            <form name="myform" onSubmit="return false">
+                <input type="text" id="myVal" placeholder="Enter search here...">
+                <button id="sort" type="submit">Sort</button>
+                <button id="clear" type="button">clear</button>
+                <button id="playPause" type="button">play</button>
+            </form>
+            <div class="slidecontainer">
+                <input type="range" min="0" max="1400" value="1" class="slider" id="dateSlider" style="width: 80%; z-index:100;">
+                <!--<div class="horizontal-timeline"></div>-->
+                <div id="timeline" , class="timeline-container" style="display: inline-block; width: 79%; position: relative; top: -0.1em; left: 0.5em"></div>
+            </div>
+        </div>
+        
+    </section>
+
+
+
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+
+    <script src="slider_smoother.js"></script>
+
+</body>
+    </html>

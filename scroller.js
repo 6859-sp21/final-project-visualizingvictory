@@ -6,15 +6,18 @@ var figure = scrolly.select("figure");
 var article = scrolly.select("article");
 var step = article.selectAll(".step");
 
-let figureCaptions = ["The Liberty Ship John Brown",
-						"The Sinking of the Arizona at Pearl Harbor",
-						"Harriet Tubman and Nathan Bedford Forrest, the first grand wizard of the KKK, both had liberty ships bearing their name",
-						"Rosie would have been a welder if she'd built liberty ships",
-						"The Schenectady was one of several Liberty ships to experience catastrophic cracking",
-						"Constance Tipper solved the mystery of low-temperature embrittlement in steels used on Liberty Ships",
-						"The Red Oak Victory is the only surviving Victory Ship",
-						"Aside from helping build the Hoover Damn and over 1,000 ships, Henry Kaiser also started Kaiser Permanente to provide healthcare for his workers and their families",
-						"American service members in Paris, celebrating the end of the war"]
+let figureCaptions = ["The Liberty Ship John Brown. <a href='http://www.liberty-ship.com/' target = '_blank'>Source</a>",
+						"The Sinking of the Arizona at Pearl Harbor. <a href='https://www.flickr.com/photos/35740357@N03/5238210870/' target = '_blank'>Source</a>",
+						"Harriet Tubman and Nathan Bedford Forrest, the first grand wizard of the KKK, both had liberty ships bearing their name. "+ 
+						"<a href='https://www.loc.gov/resource/ppmsca.54230/' target = '_blank'>Source1</a> " +
+						"<a href='https://loc.gov/pictures/resource/ppmscd.00082/' target = '_blank'>Source2</a>",
+						"Rosie would have been a welder if she'd built liberty ships. <a href='https://www.flickr.com/photos/35740357@N03/3678696585/' target = '_blank'>Source</a>",
+						"The Schenectady was one of several Liberty ships to experience catastrophic cracking. <a href='https://about.kaiserpermanente.org/our-story/our-history/in-defense-of-henry-j-kaisers-world-war-ii-ship-quality' target = '_blank'>Source</a>",
+						"Constance Tipper solved the mystery of low-temperature embrittlement in steels used on Liberty Ships. <a href='http://www-g.eng.cam.ac.uk/125/1925-1950/tipper.html' target = '_blank'>Source</a>",
+						"The Red Oak Victory is the only surviving Victory Ship. <a href='https://en.wikipedia.org/wiki/Victory_ship#/media/File:RedOakVictory-2013-07-20.jpg' target = '_blank'>Source</a>",
+						"Aside from helping build the Hoover Damn and over 1,000 ships, Henry Kaiser also started Kaiser Permanente to provide healthcare for his workers and their families"+
+						". <a href='https://about.kaiserpermanente.org/our-story/our-history' target = '_blank'>Source</a>",
+						"American service members in Paris, celebrating the end of the war. <a href='https://prologue.blogs.archives.gov/2015/09/02/victory-americans-everywhere-celebrated-the-end-of-world-war-ii-in-1945/' target = '_blank'>Source</a>"]
 
 // initialize the scrollama
 var scroller = scrollama();

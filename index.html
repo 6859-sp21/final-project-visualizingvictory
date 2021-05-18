@@ -252,8 +252,9 @@
                 </div>
                 <div class="step" data-step="2">
                     <p>
-                        After the attack on Pearl Harbor, the United States rapidly began ramping up production of all manner of war goods, and it became clear that we needed to defeat
-                        the Axis powers, in part, by out-manufacturing them. However, this strategy of heavily industrialized warfare raised the new challenge of moving unprecedented quantites
+                        After the attack on Pearl Harbor, it became clear that the Allies needed to defeat the Axis powers, in part, by out-manufacturing them. Thus, 
+                        the United States began rapdily ramping up production of all manner of war goods. However, this strategy of heavily industrialized warfare raised 
+                        the new challenge of moving unprecedented quantites
                         of supplies across entire oceans to those who needed them. Production of Liberty Ships skyrocketed to meet this demand.
                     </p>
                 </div>
@@ -274,7 +275,7 @@
                 </div>
                 <div class="step" data-step="5">
                     <p>
-                        While transiting the North Atlantic, early Liberty Ships were prone to developing dangerously large cracks in their hulls. Such cracks caused 3 Liberty Ships to break completely in half,
+                        While transiting the North Atlantic, early Liberty Ships were prone to developing dangerously large cracks in their hulls. Such cracks caused three Liberty Ships to break completely in half,
                         leading to an urgent investigation of their cause.
                     </p>
                 </div>
@@ -295,7 +296,7 @@
                 </div>
                 <div class="step" data-step="8">
                     <p>
-                        These nearly 3,400 ships were constructed at over a dozen shipyards across the country. Some locations built only a few Liberty or Victory ships while others built hundreds.
+                        These 3,200-some-odd ships were constructed at over a dozen shipyards across the country. Some locations built only a few Liberty or Victory ships while others built hundreds.
                         The Bethlehem-Fairfield shipyard, in Maryland, and several shipyards on the West Coast are notable for their prolific output. In particular, shipyards operated by Henry Kaiser,
                         dotting the coastlines of California, Oregon, and Washington, were known for using innovative processes to build ships faster and cheaper than anywhere else.
                     </p>
@@ -310,7 +311,9 @@
                         kamikazes, and nature itself.
                         <br />
                         <br />
-                        These ships served an indisputable role in the Allied victory in WWII. What follows below is a data-driven exploration of this incredible story.
+                        The construction of these ships played an indisputable role in the Allied victory in WWII. What follows below is a data-driven exploration of this incredible story.
+                        <br />
+                        <br />
                     </p>
                 </div>
             </article>
@@ -369,29 +372,56 @@
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
+                <header>
+                    <h1>Visualizing Victory</h1>
+                </header>
+                <img src="images/summary_image.png" style="max-width:50%; object-fit:contain; left: 25%; position:relative">
                 <p>
+                    This website and visualization were created by Max L'Etoile, as the final project for MIT class <a href="http://vis.csail.mit.edu/classes/6.859/">
+                        6.859: Interactive Data Visualization
+                    </a>.
+                    <br />
+                    <br />
+                    To use the interactive visualization below the accompanying article, click on the play button and watch as
+                    every Liberty and Victory ship built during the war populate your screen. When the initial animation has finished, mouse around and click on the various
+                    elements of the visualization to uncover more details about the historical entities they represent. Manipulate the slider beneath the timeline to
+                    explore the temporal components of this data. Use the search bar to highlight ships with a given keyword in their historical record.
+                    <br />
+                    <br />
                     This project owes a great deal to the work of two individuals in particular: James Davies of WW2Ships.com and Mark Biegert of the Math Encounters Blog.
                     The history of the Liberty Ships that James Davies compiled is astounding in both its depth and completeness, and Mark Biegert did a fantastic job
-                    converting that report into a clean, ready-to-use database. Both Davies' report and Biegert's blog post can be found 
+                    converting that report into a clean, ready-to-use database. Both Davies' report and Biegert's blog post can be found
                     <a href="https://www.mathscinotes.com/2018/05/liberty-ship-production-data/" target="_blank">here</a>. In the same blog post,
                     Biegert also curated the Victory Ship data available on
                     Wikipedia.
                     <br />
                     <br />
-                    Indeed, the Wikipedia entries for the <a href="https://en.wikipedia.org/wiki/Liberty_ship" target="_blank">Liberty</a> and 
+                    Indeed, the Wikipedia entries for the <a href="https://en.wikipedia.org/wiki/Liberty_ship" target="_blank">Liberty</a> and
                     <a href="https://en.wikipedia.org/wiki/Victory_ship" target="_blank">Victory</a> ships are incredibly rich resources and informed most of the written content in this
-                    project. More information on the history of the US Merchant Marines can be found on <a href="http://www.usmm.org/" target="_blank">this website</a>. 
+                    project. More information on the history of the US Merchant Marines can be found on <a href="http://www.usmm.org/" target="_blank">this website</a>.
                     The articles titled "African-American Mariners" and
                     "Struggle for Veteran Status" were particularly enlightening.
                     <br />
                     <br />
-                    This project made use of and gratefully acknowledges D3.js and Scrollama.js
+                    Images used in this project are taken from the public domain, and captions link to the original source (except for the captionless main image,
+                    which is from <a href="https://www.nps.gov/articles/liberty-ships-and-victory-ships-america-s-lifeline-in-war-teaching-with-historic-places.htm"
+                                     target="_blank">here</a>).
+                    <br />
+                    <br />
+                    This project made extensive use of and gratefully acknowledges <a href="https://d3js.org/" target="_blank">D3.js</a> and
+                    <a href="https://github.com/russellgoldenberg/scrollama" target="_blank">Scrollama.js</a>
+                    <br />
+                    <br />
+                    A formal bibliography for this project can be found in this <a href="final/FinalPaper.pdf" target="_blank">accompanying paper</a>.
+                    <br />
+                    <br />
+                    The required video trailer can be found <a href="final/project_trailer.mp4" target="_blank">here</a>.
 
                 </p>
             </div>
 
         </div>
-        <button id="myBtn" style="position:fixed; bottom: 2em; right: 0; margin: 0">Further Reading and <br />Acknowledgments</button>
+        <button id="myBtn" style="position:fixed; bottom: 2em; right: 0; margin: 0">About this Project and<br />Acknowledgments</button>
     </main>
 
 
@@ -403,7 +433,7 @@
     <script src="https://unpkg.com/scrollama"></script>
 
 
-    <script src="add_victory_hover_bug.js"></script>
+    <script src="mainViz.js"></script>
 
     <script src="scroller.js"></script>
     <script>// Get the modal
